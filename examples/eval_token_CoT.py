@@ -74,7 +74,7 @@ def evaluate(
                 f"Target: {answer}\n"
                 f"Predicted: {pred_answer}\n"
             )
-    accuracy = (total_correct / total_instances) * 100
+    accuracy = total_correct / total_instances
     return accuracy
 
 
@@ -114,7 +114,7 @@ def main():
     )
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False)
     accuracy = evaluate(dataloader, tokenizer, model, args.max_new_tokens)
-    print(f"Accuracy: {accuracy} %")
+    print(f"Accuracy: {accuracy}")
 
 
 if __name__ == "__main__":

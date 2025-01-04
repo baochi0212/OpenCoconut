@@ -32,8 +32,8 @@ def get_device():
 def main():
     # Initialize model and tokenizer
     logger.info("Initializing model and tokenizer")
-    model_name = "Qwen/Qwen2.5-0.5B"
-    output_dir = "./coconut_output"
+    model_name = "./checkpoint_spp/Qwen2.5-0.5B-Instruct"
+    output_dir = "./debug"
 
     # tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -48,7 +48,7 @@ def main():
         continuous_thoughts=2,
     )
     model = AutoCoconutForCausalLM.from_pretrained(
-        model_name, config, torch_dtype=torch.bfloat16, device_map=get_device()
+        model_name, config, torch_dtype=torch.float32, device_map=get_device()
     )
     model.resize_token_embeddings(len(tokenizer))
     if os.getenv("DEBUG", "0") == "1":
@@ -57,16 +57,16 @@ def main():
     # Set up training arguments
     training_args = TrainingArguments(
         output_dir=output_dir,
-        per_device_train_batch_size=1,
-        gradient_accumulation_steps=1,
+        per_device_train_batch_size=2,
+        gradient_accumulation_steps=2,
         learning_rate=1e-4,
         warmup_ratio=0.1,
         max_steps=1000,
         logging_steps=1,
         save_steps=10000,
-        bf16=True,
-        bf16_full_eval=True,
+        # bf16_full_eval=True,
         optim="adamw_torch", # save memory: adamw_bnb_8bit
+        report_to="none"
     )
 
     # Initialize trainer
@@ -74,7 +74,7 @@ def main():
         logger.info(f"starting stage {stage}")
         logger.info("preparing dataset")
         dataset = CoTDataset(
-            "casperhansen/gsm8k_synthetic_cot",
+            "./dataset_spp/gsm8k_synthetic_cot",
             tokenizer,
             max_length=512,
             coconut_config=config,
