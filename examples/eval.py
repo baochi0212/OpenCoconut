@@ -69,11 +69,11 @@ def evaluate(
             )
             if answer == pred_answer:
                 total_correct += 1
-            print(
-                f"Input: {tokenizer.decode(thought_ids_batch, skip_special_tokens=True)}\n"
-                f"Target: {answer}\n"
-                f"Predicted: {pred_answer}\n"
-            )
+            # print(
+            #     f"Input: {tokenizer.decode(thought_ids_batch, skip_special_tokens=True)}\n"
+            #     f"Target: {answer}\n"
+            #     f"Predicted: {pred_answer}\n"
+            # )
     accuracy = (total_correct / total_instances) * 100
     return accuracy
 

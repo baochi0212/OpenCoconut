@@ -32,7 +32,7 @@ def get_device():
 def main():
     # Initialize model and tokenizer
     logger.info("Initializing model and tokenizer")
-    model_name = "./checkpoint_spp/Qwen2.5-0.5B-Instruct"
+    model_name = "./checkpoint_spp/qwen_0.5b"
     output_dir = "./debug"
 
     # tokenizer
@@ -65,7 +65,7 @@ def main():
         logging_steps=1,
         save_steps=10000,
         # bf16_full_eval=True,
-        optim="adamw_torch", # save memory: adamw_bnb_8bit
+        optim="adamw_torch",  # save memory: adamw_bnb_8bit
         report_to="none"
     )
 
